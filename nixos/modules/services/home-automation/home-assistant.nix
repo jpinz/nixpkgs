@@ -324,6 +324,25 @@ in
       '';
     };
 
+    customThemes = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      example = literalExpression ''
+        with pkgs.home-assistant-custom-themes; [
+          material-you-theme
+        ];
+      '';
+      description = ''
+        List of custom themes to load as themes.
+
+        Available themes can be found below `pkgs.home-assistant-custom-themes`.
+
+        ::: {.note}
+        Automatic loading only works with lovelace in `yaml` mode.
+        :::
+      '';
+    };
+
     config = mkOption {
       type = types.nullOr (
         types.submodule {
@@ -701,6 +720,16 @@ in
               ln -fns "''${paths[@]}" "${cfg.configDir}/custom_components/"
             done
           '';
+          copyCustomThemes =
+            if cfg.customThemes != [ ] then
+              ''
+                mkdir -p "${cfg.configDir}/themes"
+                ln -fns ${customThemesDir} "${cfg.configDir}/themes/nixos-themes"
+              ''
+            else
+              ''
+                rm -f "${cfg.configDir}/themes/nixos-themes"
+              '';
           removeBlueprints = ''
             # remove blueprints symlinked in from below the /nix/store
             readarray -d "" blueprints < <(find "${cfg.configDir}/blueprints" -maxdepth 2 -type l -print0)
@@ -729,6 +758,7 @@ in
         + (optionalString (cfg.lovelaceConfig != null) copyLovelaceConfig)
         + copyCustomLovelaceModules
         + copyCustomComponents
+        + copyCustomThemes
         + removeBlueprints
         + copyBlueprints;
       environment.PYTHONPATH = package.pythonPath;
