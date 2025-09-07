@@ -142,12 +142,18 @@ let
     paths = cfg.customLovelaceModules;
   };
 
-  # Create parts of the lovelace config that reference lovelave modules as resources
+  # Create parts of the lovelace config that reference lovelace modules as resources
   customLovelaceModulesResources = {
     lovelace.resources = map (card: {
       url = "/local/nixos-lovelace-modules/${card.entrypoint or (card.pname + ".js")}?${card.version}";
       type = "module";
     }) cfg.customLovelaceModules;
+  };
+
+  # Create a directory that holds all lovelace themes
+  customThemesDir = pkgs.buildEnv {
+    name = "home-assistant-custom-themes";
+    paths = cfg.customThemes;
   };
 in
 {
