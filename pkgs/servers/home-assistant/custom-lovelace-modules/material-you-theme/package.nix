@@ -33,7 +33,7 @@ buildNpmPackage rec {
     description = "Material Design 3 Theme for Home Assistant";
     homepage = "https://github.com/Nerwyn/material-you-theme";
     license = licenses.asl20;
-    maintainers = with maintainers; [ k900 ];
+    maintainers = with maintainers; [ jpinz ];
     platforms = platforms.all;
   };
 }
