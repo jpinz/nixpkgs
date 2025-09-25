@@ -1695,8 +1695,6 @@ with pkgs;
 
   glances = python3Packages.callPackage ../applications/system/glances { };
 
-  glaxnimate = libsForQt5.callPackage ../applications/video/glaxnimate { };
-
   go2tv-lite = go2tv.override { withGui = false; };
 
   guglielmo = libsForQt5.callPackage ../applications/radio/guglielmo { };
@@ -1916,8 +1914,6 @@ with pkgs;
   czkawka-full = czkawka.wrapper.override {
     extraPackages = [ ffmpeg ];
   };
-
-  commitizen = with python3Packages; toPythonApplication commitizen;
 
   compactor = callPackage ../applications/networking/compactor {
     protobuf = protobuf_21;
@@ -3215,11 +3211,13 @@ with pkgs;
       isl_0_20 = callPackage ../development/libraries/isl/0.20.0.nix { };
       isl_0_23 = callPackage ../development/libraries/isl/0.23.0.nix { };
       isl_0_24 = callPackage ../development/libraries/isl/0.24.0.nix { };
+      isl_0_27 = callPackage ../development/libraries/isl/0.27.0.nix { };
     })
     isl
     isl_0_20
     isl_0_23
     isl_0_24
+    isl_0_27
     ;
 
   jackett = callPackage ../servers/jackett { };
@@ -3374,9 +3372,6 @@ with pkgs;
   netdataCloud = netdata.override {
     withCloudUi = true;
   };
-
-  netsurf = recurseIntoAttrs (callPackage ../applications/networking/browsers/netsurf { });
-  netsurf-browser = netsurf.browser;
 
   nyxt = callPackage ../applications/networking/browsers/nyxt {
     sbcl = sbcl_2_4_6;
@@ -3729,7 +3724,7 @@ with pkgs;
 
   ome_zarr = with python3Packages; toPythonApplication ome-zarr;
 
-  onlykey = callPackage ../tools/security/onlykey { node_webkit = nwjs; };
+  onlykey = callPackage ../tools/security/onlykey { };
 
   openapi-generator-cli = callPackage ../tools/networking/openapi-generator-cli {
     jre = pkgs.jre_headless;
@@ -5365,6 +5360,8 @@ with pkgs;
     withQt = true;
   };
 
+  lima-additional-guestagents = callPackage ../by-name/li/lima/additional-guestagents.nix { };
+
   lld = llvmPackages.lld;
 
   lldb = llvmPackages.lldb;
@@ -5589,6 +5586,7 @@ with pkgs;
     cargo-pgrx_0_12_0_alpha_1
     cargo-pgrx_0_12_6
     cargo-pgrx_0_14_1
+    cargo-pgrx_0_16_0
     cargo-pgrx
     ;
 
@@ -5747,12 +5745,24 @@ with pkgs;
   yosys-synlig = callPackage ../development/compilers/yosys/plugins/synlig.nix { };
   yosys-symbiflow = callPackage ../development/compilers/yosys/plugins/symbiflow.nix { };
 
-  zulu8 = callPackage ../development/compilers/zulu/8.nix { };
-  zulu11 = callPackage ../development/compilers/zulu/11.nix { };
-  zulu17 = callPackage ../development/compilers/zulu/17.nix { };
-  zulu21 = callPackage ../development/compilers/zulu/21.nix { };
-  zulu23 = callPackage ../development/compilers/zulu/23.nix { };
-  zulu24 = callPackage ../development/compilers/zulu/24.nix { };
+  inherit
+    ({
+      zulu8 = callPackage ../development/compilers/zulu/8.nix { };
+      zulu11 = callPackage ../development/compilers/zulu/11.nix { };
+      zulu17 = callPackage ../development/compilers/zulu/17.nix { };
+      zulu21 = callPackage ../development/compilers/zulu/21.nix { };
+      zulu23 = callPackage ../development/compilers/zulu/23.nix { };
+      zulu24 = callPackage ../development/compilers/zulu/24.nix { };
+      zulu25 = callPackage ../development/compilers/zulu/25.nix { };
+    })
+    zulu8
+    zulu11
+    zulu17
+    zulu21
+    zulu23
+    zulu24
+    zulu25
+    ;
   zulu = zulu21;
 
   ### DEVELOPMENT / INTERPRETERS
@@ -6412,11 +6422,7 @@ with pkgs;
     electron-chromedriver_38
     ;
 
-  electron_35 =
-    if lib.meta.availableOn stdenv.hostPlatform electron-source.electron_35 then
-      electron-source.electron_35
-    else
-      electron_35-bin;
+  electron_35 = electron_35-bin;
   electron_36 =
     if lib.meta.availableOn stdenv.hostPlatform electron-source.electron_36 then
       electron-source.electron_36
@@ -6646,8 +6652,6 @@ with pkgs;
   ctags = callPackage ../development/tools/misc/ctags { };
 
   ctagsWrapped = callPackage ../development/tools/misc/ctags/wrapped.nix { };
-
-  cubiomes-viewer = libsForQt5.callPackage ../applications/misc/cubiomes-viewer { };
 
   # can't use override - it triggers infinite recursion
   cmakeMinimal = callPackage ../by-name/cm/cmake/package.nix {
@@ -7521,8 +7525,6 @@ with pkgs;
   geoip = callPackage ../development/libraries/geoip { };
 
   geos = callPackage ../development/libraries/geos { };
-
-  geos_3_9 = callPackage ../development/libraries/geos/3.9.nix { };
 
   gettext = callPackage ../development/libraries/gettext { };
 
@@ -8489,12 +8491,6 @@ with pkgs;
 
   openal = openalSoft;
 
-  openbabel = openbabel3;
-
-  openbabel2 = callPackage ../development/libraries/openbabel/2.nix { };
-
-  openbabel3 = callPackage ../development/libraries/openbabel { };
-
   opencascade-occt_7_6 = opencascade-occt.overrideAttrs rec {
     pname = "opencascade-occt";
     version = "7.6.2";
@@ -9042,14 +9038,12 @@ with pkgs;
   vtk = vtk_9_5;
 
   vtk-full = vtk.override {
-    qtVersion = "6";
+    withQt6 = true;
     mpiSupport = true;
     pythonSupport = true;
   };
 
-  vtkWithQt5 = vtk.override { qtVersion = "5"; };
-
-  vtkWithQt6 = vtk.override { qtVersion = "6"; };
+  vtkWithQt6 = vtk.override { withQt6 = true; };
 
   vulkan-caps-viewer = libsForQt5.callPackage ../tools/graphics/vulkan-caps-viewer { };
 
@@ -12184,6 +12178,16 @@ with pkgs;
 
   mercurialFull = mercurial.override { fullBuild = true; };
 
+  meshlab = callPackage ../by-name/me/meshlab/package.nix {
+    stdenv = if stdenv.hostPlatform.isDarwin then llvmPackages_18.stdenv else stdenv;
+    llvmPackages = llvmPackages_18;
+  };
+
+  meshlab-unstable = callPackage ../by-name/me/meshlab-unstable/package.nix {
+    stdenv = if stdenv.hostPlatform.isDarwin then llvmPackages_18.stdenv else stdenv;
+    llvmPackages = llvmPackages_18;
+  };
+
   meshcentral = callPackage ../tools/admin/meshcentral { };
 
   michabo = libsForQt5.callPackage ../applications/misc/michabo { };
@@ -13850,14 +13854,6 @@ with pkgs;
 
   liquidwar5 = callPackage ../games/liquidwar/5.nix { };
 
-  maptool = callPackage ../games/maptool {
-    # MapTool is fussy about which JRE it uses; OpenJDK will leave it hanging
-    # at launch in a class initialization deadlock. MapTool ships Temurin with
-    # their pre-built releases so we might as well use it too.
-    jre = temurin-bin-21;
-    openjfx = openjfx21;
-  };
-
   mindustry-wayland = callPackage ../by-name/mi/mindustry/package.nix {
     enableWayland = true;
   };
@@ -14798,12 +14794,11 @@ with pkgs;
   # Exceptions are versions that we need to keep to allow upgrades from older NixOS releases
   inherit (callPackage ../applications/networking/cluster/kops { })
     mkKops
-    kops_1_27
-    kops_1_28
-    kops_1_29
-    kops_1_30
+    kops_1_31
+    kops_1_32
+    kops_1_33
     ;
-  kops = kops_1_29;
+  kops = kops_1_33;
 
   lilypond = callPackage ../misc/lilypond { };
 

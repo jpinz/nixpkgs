@@ -410306,7 +410306,6 @@ self: {
       benchmarkToolDepends = [ cpphs ];
       description = "Efficiently hash (large) Haskell values";
       license = lib.licenses.bsd3;
-      badPlatforms = [ "aarch64-linux" ];
       maintainers = [ lib.maintainers.sternenseemann ];
     }
   ) { };

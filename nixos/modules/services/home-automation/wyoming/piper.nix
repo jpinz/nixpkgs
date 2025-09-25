@@ -103,8 +103,8 @@ in
 
               useCUDA = mkOption {
                 type = bool;
-                default = config.cudaSupport;
-                defaultText = literalExpression "config.cudaSupport";
+                default = pkgs.config.cudaSupport;
+                defaultText = literalExpression "pkgs.config.cudaSupport";
                 description = ''
                   Whether to accelerate the underlying onnxruntime library with CUDA.
                 '';
@@ -169,7 +169,7 @@ in
                 options.lengthScale
                 "--noise-scale"
                 options.noiseScale
-                "--noise-w"
+                "--noise-w-scale"
                 options.noiseWidth
               ]
               ++ lib.optionals options.streaming [

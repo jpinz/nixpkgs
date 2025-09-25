@@ -22,12 +22,12 @@ let
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "opencode";
-  version = "0.9.9";
+  version = "0.11.1";
   src = fetchFromGitHub {
     owner = "sst";
     repo = "opencode";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-VHg5yZeU380ggCUwgq2yUD4jV0IiacsIDlcoUjZzuFA=";
+    hash = "sha256-a3NReKk6wZre5GXmNRuBLzM0MtkAmIGe4r+zcZH+G1A=";
   };
 
   tui = buildGoModule {
@@ -103,7 +103,14 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # Required else we get errors that our fixed-output derivation references store paths
     dontFixup = true;
 
-    outputHash = "sha256-sibjZaPzA4r/CjHg0ual5ueEELDUU1jeZjDnZEMrozI=";
+    outputHash =
+      {
+        x86_64-linux = "sha256-fGf2VldMlxbr9pb3B6zVL+fW1S8bRjefJW+jliTO73A=";
+        aarch64-linux = "sha256-jEsDrC/uNZKx7TvD1X9ToTFFTBgrKIeSXd5cTPBvxGI=";
+        x86_64-darwin = "sha256-U2F3mXas/iMOCqQgBY34crHtkPx5wOMeFClUAGEj4Go=";
+        aarch64-darwin = "sha256-sibjZaPzA4r/CjHg0ual5ueEELDUU1jeZjDnZEMrozI=";
+      }
+      .${stdenv.hostPlatform.system};
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
