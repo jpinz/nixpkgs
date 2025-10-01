@@ -10,13 +10,13 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "qwen-code";
-  version = "0.0.12";
+  version = "0.0.14";
 
   src = fetchFromGitHub {
     owner = "QwenLM";
     repo = "qwen-code";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-qsa4bAk0QUUZCtoEREBd+8s0AwwVr1os5TO7Luo/UrY=";
+    hash = "sha256-Rld6k0MPfOOncK240zOJbcvheV4UKU2yF7luBrTrnFs=";
   };
 
   patches = [
@@ -25,7 +25,7 @@ buildNpmPackage (finalAttrs: {
     ./add-missing-resolved-integrity-fields.patch
   ];
 
-  npmDepsHash = "sha256-uLKxUD0e9YSEQz4dxsGXYojcYS6noqsWhtmsc20He0k=";
+  npmDepsHash = "sha256-43s13HncNKv4uOKVwNvqIF+Ih3rJBWrpVJnE3hCKD2w=";
 
   nativeBuildInputs = [
     jq
@@ -41,7 +41,7 @@ buildNpmPackage (finalAttrs: {
     substituteInPlace package.json --replace-fail '"@lvce-editor/ripgrep": "^1.6.0",' ""
     substituteInPlace packages/core/package.json --replace-fail '"@lvce-editor/ripgrep": "^1.6.0",' ""
     substituteInPlace packages/core/src/tools/ripGrep.ts \
-      --replace-fail "import { rgPath } from '@lvce-editor/ripgrep';" "const rgPath = 'rg';"
+      --replace-fail "const { rgPath } = await import('@lvce-editor/ripgrep');" "const rgPath = 'rg';"
 
     # patches below remove node-pty dependency which causes build fail on Darwin
     # should be conditional on platform but since package-lock.json is patched it changes its hash

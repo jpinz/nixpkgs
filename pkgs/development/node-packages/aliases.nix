@@ -40,7 +40,6 @@ mapAliases {
     throw "@commitlint/config-conventional has been dropped, as it is a library and your JS project should lock it instead."; # added 2024-12-16
   "@emacs-eask/cli" = pkgs.eask; # added 2023-08-17
   "@forge/cli" = throw "@forge/cli was removed because it was broken"; # added 2023-09-20
-  "@githubnext/github-copilot-cli" = pkgs.github-copilot-cli; # Added 2023-05-02
   "@google/clasp" = pkgs.google-clasp; # Added 2023-05-07
   "@maizzle/cli" = pkgs.maizzle; # added 2023-08-17
   "@medable/mdctl-cli" = throw "@medable/mdctl-cli was removed because it was broken"; # added 2023-08-21
@@ -63,6 +62,7 @@ mapAliases {
   inherit (pkgs) bash-language-server; # added 2024-06-07
   bibtex-tidy = pkgs.bibtex-tidy; # added 2023-07-30
   bitwarden-cli = pkgs.bitwarden-cli; # added 2023-07-25
+  bower = throw "bower was removed because it was deprecated"; # added 2025-09-17
   inherit (pkgs) bower2nix; # added 2024-08-23
   inherit (pkgs) btc-rpc-explorer; # added 2023-08-17
   inherit (pkgs) carbon-now-cli; # added 2023-08-17
@@ -73,10 +73,12 @@ mapAliases {
   inherit (pkgs) coc-clangd; # added 2024-06-29
   inherit (pkgs) coc-css; # added 2024-06-29
   inherit (pkgs) coc-diagnostic; # added 2024-06-29
+  inherit (pkgs) coc-docker; # added 2025-10-01
   coc-imselect = throw "coc-imselect was removed because it was broken"; # added 2023-08-21
   inherit (pkgs) coc-pyright; # added 2024-07-14
   coc-metals = throw "coc-metals was removed because it was deprecated upstream. vimPlugins.nvim-metals is its official replacement."; # Added 2024-10-16
   coc-python = throw "coc-python was removed because it was abandoned upstream on 2020-12-24. Upstream now recommends using coc-pyright or coc-jedi instead."; # added 2024-10-15
+  coc-rls = throw "coc-rls was removed because rls was deprecated in 2022. You should use coc-rust-analyzer instead, as rust-analyzer is maintained."; # added 2025-10-01
   inherit (pkgs) coc-toml;
   coc-tslint = throw "coc-tslint was removed because it was deprecated upstream; coc-eslint offers comparable features for eslint, which replaced tslint"; # Added 2024-10-18
   coc-tslint-plugin = throw "coc-tslint-plugin was removed because it was deprecated upstream; coc-eslint offers comparable features for eslint, which replaced tslint"; # Added 2024-10-18

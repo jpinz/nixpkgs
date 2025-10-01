@@ -114355,7 +114355,6 @@ self: {
       ];
       description = "Low-level Botan bindings";
       license = lib.licenses.bsd3;
-      hydraPlatforms = lib.platforms.none;
       maintainers = [ lib.maintainers.mikatammi ];
     }
   ) { };
@@ -401807,7 +401806,6 @@ self: {
       testToolDepends = [ hspec-discover ];
       description = "Advanced keyboard remapping utility";
       license = lib.licenses.mit;
-      badPlatforms = lib.platforms.darwin;
       mainProgram = "kmonad";
       maintainers = [ lib.maintainers.slotThe ];
     }
