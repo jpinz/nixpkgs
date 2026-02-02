@@ -13,7 +13,7 @@ let
     owner = "calibrain";
     repo = "shelfmark";
     tag = "v${version}";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-CegQkKOU/DKUYZnc3EFVd8mfV0W9qul3tqfoPRckOoA=";
   };
 
   frontend = buildNpmPackage {
@@ -22,7 +22,7 @@ let
 
     sourceRoot = "${src.name}/src/frontend";
 
-    npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    npmDepsHash = "sha256-FXxRNIv6O9vyXm9/m89tlkSDtw4RzTgUEY2mad/R6mA=";
 
     installPhase = ''
       runHook preInstall
