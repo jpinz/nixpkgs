@@ -1,6 +1,6 @@
 {
   lib,
-  llvmPackages,
+  llvmPackages_18,
   fetchFromGitHub,
   makeBinaryWrapper,
   which,
@@ -8,17 +8,18 @@
 }:
 
 let
+  llvmPackages = llvmPackages_18;
   inherit (llvmPackages) stdenv;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "odin";
-  version = "dev-2025-09";
+  version = "dev-2025-11";
 
   src = fetchFromGitHub {
     owner = "odin-lang";
     repo = "Odin";
     tag = finalAttrs.version;
-    hash = "sha256-PxegNMEzxytZtmhmzDgb1Umzx/9aUIlc9SDojRlZfsE=";
+    hash = "sha256-Nyi8/52xexGPSnWIF8eMSMqaXFQD57dDRGl6IuZcppw=";
   };
 
   patches = [

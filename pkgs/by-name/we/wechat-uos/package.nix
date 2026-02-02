@@ -6,7 +6,23 @@
   dpkg,
   nss,
   nspr,
-  xorg,
+  libxt,
+  libxtst,
+  libxscrnsaver,
+  libxrender,
+  libxrandr,
+  libxi,
+  libxft,
+  libxfixes,
+  libxext,
+  libxdamage,
+  libxcursor,
+  libxcomposite,
+  libx11,
+  libsm,
+  libice,
+  libxshmfence,
+  libxcb,
   pango,
   zlib,
   atkmm,
@@ -43,12 +59,9 @@
   libva,
   libGL,
   libnotify,
+  krb5,
   buildFHSEnv,
   writeShellScript,
-  runCommandLocal,
-  cacert,
-  coreutils,
-  curl,
 }:
 let
   wechat-uos-env = stdenvNoCC.mkDerivation {
@@ -66,7 +79,7 @@ let
     preferLocalBuild = true;
   };
 
-  wechat-uos-runtime = with xorg; [
+  wechat-uos-runtime = [
     stdenv.cc.cc
     stdenv.cc.libc
     pango
@@ -75,23 +88,23 @@ let
     xcbutilimage
     xcbutilkeysyms
     xcbutilrenderutil
-    libX11
-    libXt
-    libXext
-    libSM
-    libICE
+    libx11
+    libxt
+    libxext
+    libsm
+    libice
     libxcb
     libxkbcommon
     libxshmfence
-    libXi
-    libXft
-    libXcursor
-    libXfixes
-    libXScrnSaver
-    libXcomposite
-    libXdamage
-    libXtst
-    libXrandr
+    libxi
+    libxft
+    libxcursor
+    libxfixes
+    libxscrnsaver
+    libxcomposite
+    libxdamage
+    libxtst
+    libxrandr
     libnotify
     atk
     atkmm
@@ -108,7 +121,7 @@ let
     libva
     freetype
     fontconfig
-    libXrender
+    libxrender
     libuuid
     expat
     glib
@@ -125,6 +138,7 @@ let
     pulseaudio
     qt6.qt5compat
     bzip2
+    krb5
   ];
 
   wechat =
@@ -133,37 +147,14 @@ let
 
       pname = "wechat-uos";
       version = sources.version;
-      fetch =
+      src = fetchurl (
         {
-          url,
-          hash,
-        }:
-        runCommandLocal "wechat-uos-${version}-src"
-          {
-            outputHashAlgo = "sha256";
-            outputHash = hash;
-
-            nativeBuildInputs = [
-              curl
-              coreutils
-            ];
-
-            impureEnvVars = lib.fetchers.proxyImpureEnvVars;
-            SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
-          }
-          ''
-            curl -A "debian APT-HTTP/1.3 (1.6.11)" --retry 3 --retry-delay 3 -L "${url}" > $out
-          '';
-
-      srcs = {
-        x86_64-linux = fetch sources.amd64;
-        aarch64-linux = fetch sources.arm64;
-        loongarch64-linux = fetch sources.loongarch64;
-      };
-
-      src =
-        srcs.${stdenv.hostPlatform.system} or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
-
+          curlOpts = "-A apt";
+        }
+        // (sources.${stdenv.hostPlatform.system}
+          or (throw "Unsupported system: ${stdenv.hostPlatform.system}")
+        )
+      );
     in
     stdenvNoCC.mkDerivation {
       inherit pname src version;
@@ -188,17 +179,17 @@ let
         runHook postInstall
       '';
 
-      meta = with lib; {
+      meta = {
         description = "Messaging app";
         homepage = "https://weixin.qq.com/";
-        license = licenses.unfree;
+        license = lib.licenses.unfree;
         platforms = [
           "x86_64-linux"
           "aarch64-linux"
           "loongarch64-linux"
         ];
-        sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-        maintainers = with maintainers; [
+        sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+        maintainers = with lib.maintainers; [
           pokon548
           xddxdd
         ];

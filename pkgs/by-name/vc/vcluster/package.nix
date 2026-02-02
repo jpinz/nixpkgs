@@ -10,13 +10,13 @@
 
 buildGoModule rec {
   pname = "vcluster";
-  version = "0.28.0";
+  version = "0.31.0";
 
   src = fetchFromGitHub {
     owner = "loft-sh";
     repo = "vcluster";
     tag = "v${version}";
-    hash = "sha256-ddt9UDLKlC16ki+D35Ct1uvygeFb++fNeHVps0vCsPA=";
+    hash = "sha256-yGvKZ70+x+PQiTCB8MxUplymlQLm9iT+ryBHFF1a/Os=";
   };
 
   vendorHash = null;
@@ -56,7 +56,6 @@ buildGoModule rec {
     license = lib.licenses.asl20;
     mainProgram = "vcluster";
     maintainers = with lib.maintainers; [
-      peterromfeldhk
       qjoly
     ];
   };

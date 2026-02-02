@@ -24,23 +24,23 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "libsignal-node";
-  version = "0.81.0";
+  version = "0.86.12";
 
   src = fetchFromGitHub {
     owner = "signalapp";
     repo = "libsignal";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-SOQyps+iGVQ3RWPLmQHzXwmMwmR1PrGIbViCmNg60P4=";
+    hash = "sha256-XVq1fvhUF0WqSs1lJRCBRuhOW4idY6Nm21UdX4/6TE8=";
   };
 
-  cargoHash = "sha256-O4v9GgNrs4+HpfgoHh6YLy4dNF1LrF1ZS50RaEHh1iM=";
+  cargoHash = "sha256-vat7vjL9HDY/m7CLUJNpU3NZ79nCVHxLO5tEtaEDBnE=";
 
   npmRoot = "node";
   npmDeps = fetchNpmDeps {
     name = "${finalAttrs.pname}-npm-deps";
     inherit (finalAttrs) version src;
     sourceRoot = "${finalAttrs.src.name}/${finalAttrs.npmRoot}";
-    hash = "sha256-KvMEQ9nJunqF2CDjiP3s3CMoeF+nbUpZDzSIMsImbPg=";
+    hash = "sha256-O2dMH45YfPlwgqYtQK7HGBgAtfePb6YIrnwqbGIGcnA=";
   };
 
   nativeBuildInputs = [
@@ -72,7 +72,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     runHook preBuild
 
     pushd node
-    npm run build -- --copy-to-prebuilds
+    npm run build -- --copy-to-prebuilds --node-arch ${stdenv.hostPlatform.node.arch}
     popd
 
     runHook postBuild

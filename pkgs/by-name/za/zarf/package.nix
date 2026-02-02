@@ -10,16 +10,16 @@
 
 buildGoModule rec {
   pname = "zarf";
-  version = "0.62.0";
+  version = "0.70.1";
 
   src = fetchFromGitHub {
     owner = "zarf-dev";
     repo = "zarf";
     tag = "v${version}";
-    hash = "sha256-mabp4G7LbtOmIVEmOK/YhjTX/RRM8ObAS6YXTJe2P/U=";
+    hash = "sha256-3ucUB6KAIm4dPf/8CysZVwKbWp9QZIeP435Aclyzhfs=";
   };
 
-  vendorHash = "sha256-As7xDEo+bMslv9Xd6CbHTqvf2XaXmO6Gp3f9+xD3kNU=";
+  vendorHash = "sha256-WjnM9G5Dcn0dawghw6NLGUebIGQ7zJ97nMPL3JgqRKM=";
   proxyVendor = true;
 
   nativeBuildInputs = [
@@ -60,12 +60,12 @@ buildGoModule rec {
         --zsh  <($out/bin/zarf completion zsh)
     '';
 
-  meta = with lib; {
+  meta = {
     description = "DevSecOps for Air Gap & Limited-Connection Systems. https://zarf.dev";
     mainProgram = "zarf";
     homepage = "https://zarf.dev";
-    license = licenses.asl20;
-    maintainers = with maintainers; [
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [
       ragingpastry
     ];
   };

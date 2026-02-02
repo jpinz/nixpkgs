@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchFromGitea,
+  fetchFromCodeberg,
   alsa-lib,
   bison,
   fcft,
@@ -34,8 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "yambar";
   version = "1.11.0";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "dnkl";
     repo = "yambar";
     rev = finalAttrs.version;
@@ -71,11 +70,11 @@ stdenv.mkDerivation (finalAttrs: {
     tllist
     udev
   ]
-  ++ lib.optionals (waylandSupport) [
+  ++ lib.optionals waylandSupport [
     wayland
     wayland-protocols
   ]
-  ++ lib.optionals (x11Support) [
+  ++ lib.optionals x11Support [
     xcbutil
     xcbutilcursor
     xcbutilerrors
@@ -122,7 +121,7 @@ stdenv.mkDerivation (finalAttrs: {
     '';
     changelog = "https://codeberg.org/dnkl/yambar/releases/tag/${finalAttrs.version}";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ ];
+    maintainers = [ ];
     platforms = lib.platforms.linux;
     mainProgram = "yambar";
   };

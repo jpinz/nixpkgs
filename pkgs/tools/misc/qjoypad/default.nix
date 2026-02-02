@@ -1,16 +1,17 @@
 {
   lib,
-  mkDerivation,
+  stdenv,
   fetchFromGitHub,
   pkg-config,
   cmake,
+  qttools,
+  wrapQtAppsHook,
   libX11,
   libXtst,
   qtbase,
-  qttools,
   qtx11extras,
 }:
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "qjoypad";
   version = "4.3.1";
 
@@ -21,10 +22,16 @@ mkDerivation rec {
     hash = "sha256:1w26ddxb1xirb7qjf7kv9llxzjhbhcb7warnxbx41qhbni46g26y";
   };
 
+  postPatch = ''
+    substituteInPlace CMakeLists.txt \
+      --replace-fail "cmake_minimum_required(VERSION 2.8.11)" "cmake_minimum_required(VERSION 3.10)"
+  '';
+
   nativeBuildInputs = [
     pkg-config
     cmake
     qttools
+    wrapQtAppsHook
   ];
   buildInputs = [
     libX11
@@ -33,7 +40,7 @@ mkDerivation rec {
     qtx11extras
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Program that lets you use gaming devices anywhere";
     longDescription = ''
       A simple Linux/QT program that lets you use your gaming devices
@@ -53,7 +60,7 @@ mkDerivation rec {
     '';
     homepage = "https://github.com/panzi/qjoypad/";
     license = lib.licenses.gpl2Only;
-    platforms = with platforms; linux;
+    platforms = with lib.platforms; linux;
     mainProgram = "qjoypad";
   };
 }

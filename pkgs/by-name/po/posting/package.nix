@@ -2,18 +2,18 @@
   lib,
   fetchFromGitHub,
   python3Packages,
-  xorg,
+  xrdb,
 }:
 python3Packages.buildPythonApplication rec {
   pname = "posting";
-  version = "2.9.0";
+  version = "2.9.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "darrenburns";
     repo = "posting";
     tag = version;
-    hash = "sha256-JkYcLh3S+vLfSCgIpiRu9tKPMjjDSdHtO8faeMlgbe8=";
+    hash = "sha256-BX1D9XgBqRIfavDxAQH7mPP/dnayQu3xSSAF6/JSM54=";
   };
 
   pythonRelaxDeps = true;
@@ -24,7 +24,7 @@ python3Packages.buildPythonApplication rec {
 
   # Required for x resources themes
   buildInputs = [
-    xorg.xrdb
+    xrdb
   ];
 
   dependencies =

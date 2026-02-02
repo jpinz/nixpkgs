@@ -4,20 +4,22 @@
   fetchFromGitHub,
   makeWrapper,
   zig,
+  versionCheckHook,
+  nix-update-script,
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "cargo-zigbuild";
-  version = "0.20.1";
+  version = "0.21.4";
 
   src = fetchFromGitHub {
     owner = "messense";
     repo = "cargo-zigbuild";
-    rev = "v${version}";
-    hash = "sha256-xJiYtVrvWEBsyTbcHKsbnTpbcTryX+ZP/OjD7GP6gQU=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-ayg5sj0Exjk986syGNyrmc+WWCCpnxUNBB2YMQ+AVwI=";
   };
 
-  cargoHash = "sha256-oByCrAUkDq+UxoAiKjKX86ETHW3yIs8oYVCgwgr8ngA=";
+  cargoHash = "sha256-DjvLuOotTL1V+BjtIzZjDuUOvdIcDaufyuCQDKmzpeM=";
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -26,12 +28,18 @@ rustPlatform.buildRustPackage rec {
       --prefix PATH : ${zig}/bin
   '';
 
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
+  versionCheckProgramArg = "--version";
+
+  passthru.updateScript = nix-update-script { };
+
   meta = {
     description = "Tool to compile Cargo projects with zig as the linker";
     mainProgram = "cargo-zigbuild";
     homepage = "https://github.com/messense/cargo-zigbuild";
-    changelog = "https://github.com/messense/cargo-zigbuild/releases/tag/v${version}";
+    changelog = "https://github.com/messense/cargo-zigbuild/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ figsoda ];
+    maintainers = [ lib.maintainers.progrm_jarvis ];
   };
-}
+})

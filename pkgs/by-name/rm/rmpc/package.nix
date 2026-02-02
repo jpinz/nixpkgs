@@ -2,6 +2,7 @@
   lib,
   rustPlatform,
   fetchFromGitHub,
+  nix-update-script,
   installShellFiles,
   pkg-config,
   cmake,
@@ -9,27 +10,24 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "rmpc";
-  version = "0.9.0";
+  version = "0.11.0";
 
   src = fetchFromGitHub {
     owner = "mierak";
     repo = "rmpc";
     rev = "v${version}";
-    hash = "sha256-6hs0neoQf1h5IORJZp8R3ELLvYBXMr1iqc7ErSsGnUQ=";
+    hash = "sha256-IcWn15tKlThuLR8s/4KtaHm4np8B8UaKYQsyEWlQoB4=";
   };
 
-  cargoHash = "sha256-xXH/MRQgT/Je/aOCZ26vdC3PtlosXLIrjbOHtnvf9os=";
-
-  checkFlags = [
-    # Test currently broken, needs to be removed. See https://github.com/mierak/rmpc/issues/254
-    "--skip=core::scheduler::tests::interleaves_repeated_and_scheduled_jobs"
-  ];
+  cargoHash = "sha256-DDOJqA5S+JiRCOgAPqw1k1b8SNCLS0aKsJsFqlykZDI=";
 
   nativeBuildInputs = [
     installShellFiles
     pkg-config
     cmake
   ];
+
+  passthru.updateScript = nix-update-script { };
 
   env.VERGEN_GIT_DESCRIBE = version;
 

@@ -74,6 +74,9 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   patches = [
+    # Fix Kerberos Support version for PAC responder
+    ./fix-kerberos-version.patch
+
     (replaceVars ./fix-ldb-modules-path.patch {
       inherit ldb;
       out = null; # will be replaced in postPatch https://github.com/NixOS/nixpkgs/pull/446589#discussion_r2384899857
@@ -216,12 +219,11 @@ stdenv.mkDerivation (finalAttrs: {
   nativeInstallCheckInputs = [
     versionCheckHook
   ];
-  versionCheckProgramArg = "--version";
   doInstallCheck = true;
 
   passthru = {
     tests = {
-      inherit (nixosTests) sssd sssd-ldap;
+      inherit (nixosTests) sssd-ldap sssd-legacy-config;
       pkg-config = testers.testMetaPkgConfig finalAttrs.finalPackage;
     };
     updateScript = nix-update-script { };

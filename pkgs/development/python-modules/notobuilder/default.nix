@@ -21,14 +21,14 @@
 
 buildPythonPackage {
   pname = "notobuilder";
-  version = "0-unstable-2025-08-20";
+  version = "0-unstable-2026-01-27";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "notofonts";
     repo = "notobuilder";
-    rev = "fb0d6067beee888e6132b50c227da1f051b1ef9f";
-    hash = "sha256-U9NVpXzdzBpgs8LFQJk70vs2dfHg+kD+YzuYZt6zQ5g=";
+    rev = "5d66754065c6257278d5cb780f6b8dc80d2a686b";
+    hash = "sha256-ba9+X1ybaHW8ZWfrIuZnnJXeFZhkcXO9RXrc37mVz4U=";
   };
 
   postPatch = ''

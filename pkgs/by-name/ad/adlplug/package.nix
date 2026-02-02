@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  unstableGitUpdater,
   cmake,
   pkg-config,
   fmt,
@@ -36,7 +37,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "${lib.strings.toLower type}plug";
-  version = "unstable-2021-12-17";
+  version = "1.0.2-unstable-2021-12-17";
 
   src = fetchFromGitHub {
     owner = "jpcima";
@@ -50,6 +51,19 @@ stdenv.mkDerivation {
     (lib.cmakeFeature "ADLplug_CHIP" chip)
     (lib.cmakeBool "ADLplug_USE_SYSTEM_FMT" true)
     (lib.cmakeBool "ADLplug_Jack" withJack)
+  ];
+
+  # See https://github.com/NixOS/nixpkgs/issues/445447
+  postPatch = ''
+    substituteInPlace thirdparty/{libADLMIDI,libOPNMIDI}/CMakeLists.txt --replace-fail \
+      'cmake_minimum_required (VERSION 3.2)' \
+      'cmake_minimum_required (VERSION 3.10)'
+  '';
+
+  patches = [
+    # fix for CMake v4
+    # https://github.com/jpcima/ADLplug/pull/100
+    ./cmake-v4.patch
   ];
 
   NIX_LDFLAGS = toString (
@@ -98,6 +112,11 @@ stdenv.mkDerivation {
     mv vst2/${mainProgram}.vst $out/Library/Audio/Plug-Ins/VST/
     mv au/${mainProgram}.component $out/Library/Audio/Plug-Ins/Components/
   '';
+
+  passthru.updateScript = unstableGitUpdater {
+    tagPrefix = "v";
+    tagFormat = "v*";
+  };
 
   meta = {
     inherit mainProgram;

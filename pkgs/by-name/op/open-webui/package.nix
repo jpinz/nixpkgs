@@ -9,13 +9,13 @@
 }:
 let
   pname = "open-webui";
-  version = "0.6.32";
+  version = "0.7.2";
 
   src = fetchFromGitHub {
     owner = "open-webui";
     repo = "open-webui";
     tag = "v${version}";
-    hash = "sha256-+P/IjELE1G2Fm8OwS5l7k78f78s/o1/Dy945aw+lfQw=";
+    hash = "sha256-BS/EB64y/ytHqfKdAmTV0ahT6HQPo96cs+O1CYwd8Rs=";
   };
 
   frontend = buildNpmPackage rec {
@@ -32,7 +32,7 @@ let
       url = "https://github.com/pyodide/pyodide/releases/download/${pyodideVersion}/pyodide-${pyodideVersion}.tar.bz2";
     };
 
-    npmDepsHash = "sha256-BcSDzLg2voHyUz4cnXQ0KRNSbLCsCwJ1itEJSbfAQhU=";
+    npmDepsHash = "sha256-OH0TuHN324Ef7ZX2JpWVi5q0ycgf1E+UXJj2b3ubMd4=";
 
     # See https://github.com/open-webui/open-webui/issues/15880
     npmFlags = [
@@ -106,16 +106,15 @@ python3Packages.buildPythonApplication rec {
       beautifulsoup4
       black
       boto3
+      chardet
       chromadb
       cryptography
       ddgs
       docx2txt
       einops
-      extract-msg
       fake-useragent
       fastapi
       faster-whisper
-      firecrawl-py
       fpdf2
       ftfy
       google-api-python-client
@@ -126,14 +125,16 @@ python3Packages.buildPythonApplication rec {
       google-generativeai
       googleapis-common-protos
       httpx
-      iso-639
       itsdangerous
       langchain
+      langchain-classic
       langchain-community
+      langchain-text-splitters
       langdetect
       ldap3
       loguru
       markdown
+      msoffcrypto-tool
       mcp
       nltk
       onnxruntime
@@ -152,9 +153,7 @@ python3Packages.buildPythonApplication rec {
       opentelemetry-instrumentation-logging
       opentelemetry-instrumentation-httpx
       opentelemetry-instrumentation-aiohttp-client
-      oracledb
       pandas
-      passlib
       peewee
       peewee-migrate
       pgvector
@@ -170,6 +169,7 @@ python3Packages.buildPythonApplication rec {
       pypdf
       python-dotenv
       python-jose
+      python-mimeparse
       python-multipart
       python-pptx
       python-socketio
@@ -185,7 +185,6 @@ python3Packages.buildPythonApplication rec {
       soundfile
       starlette-compress
       starsessions
-      tencentcloud-sdk-python
       tiktoken
       transformers
       unstructured
@@ -204,16 +203,19 @@ python3Packages.buildPythonApplication rec {
     ];
 
     all = [
+      azure-search-documents
       colbert-ai
       elasticsearch
-      moto
+      firecrawl-py
       gcp-storage-emulator
-      playwright
+      moto
       oracledb
       pinecone-client
+      playwright
       pymilvus
       pymongo
       qdrant-client
+      weaviate-client
     ]
     ++ moto.optional-dependencies.s3
     ++ postgres;

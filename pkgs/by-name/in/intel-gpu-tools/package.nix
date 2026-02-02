@@ -41,16 +41,16 @@
   xorgproto,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "intel-gpu-tools";
-  version = "2.1";
+  version = "2.2";
 
   src = fetchFromGitLab {
     domain = "gitlab.freedesktop.org";
     owner = "drm";
     repo = "igt-gpu-tools";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-O//tL7AuYmrpTlZ61YzpSKOxbtM6u6zlcANzXWTTbhw=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-Lt/mqx13nHyD5QiDl8oWGiYIiK006uQvbbzHH44LB/0=";
   };
 
   nativeBuildInputs = [
@@ -99,7 +99,7 @@ stdenv.mkDerivation rec {
   hardeningDisable = [ "bindnow" ];
 
   meta = {
-    changelog = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/v${version}/NEWS";
+    changelog = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/v${finalAttrs.version}/NEWS";
     homepage = "https://drm.pages.freedesktop.org/igt-gpu-tools/";
     description = "Tools for development and testing of the Intel DRM driver";
     license = lib.licenses.mit;
@@ -109,4 +109,4 @@ stdenv.mkDerivation rec {
     ];
     maintainers = with lib.maintainers; [ pSub ];
   };
-}
+})

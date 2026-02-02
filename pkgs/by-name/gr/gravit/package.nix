@@ -17,14 +17,14 @@
   mesa,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "gravit";
   version = "0.5.1";
 
   src = fetchFromGitHub {
     owner = "gak";
     repo = "gravit";
-    rev = version;
+    rev = finalAttrs.version;
     hash = "sha256-JuqnLLD5+Ec8kQI0SK98V1O6TTbGM6+yKn5KCHe85eM=";
   };
 
@@ -64,6 +64,10 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
+  NIX_CFLAGS_COMPILE = [
+    "-DSDL_INCLUDE_GLU_H"
+  ];
+
   meta = {
     broken = (stdenv.hostPlatform.isLinux && stdenv.hostPlatform.isAarch64);
     homepage = "https://github.com/gak/gravit";
@@ -84,4 +88,4 @@ stdenv.mkDerivation rec {
     inherit (mesa.meta) platforms;
     hydraPlatforms = lib.platforms.linux; # darwin times out
   };
-}
+})
